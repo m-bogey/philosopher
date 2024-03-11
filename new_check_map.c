@@ -126,9 +126,12 @@ void    flood_file(char **area, ssize_t x, ssize_t y, t_map *so_long)
     if (x > so_long->x || x < 0 || y > so_long->y || y < 0 || (area[y][x] != 'C' && area[y][x] != '0' && area[y][x] != 'E' && area[y][x] != 'P'))
         return ;
 	if (area[y][x] == 'E')
+ 	{
 		area[y][x] = '1';
-	else
-    	area[y][x] = 'F';
+  		return ; // return ou pas ?
+	}
+ 	else
+    		area[y][x] = 'F';
     flood_file(area, x + 1, y, so_long);
     flood_file(area, x - 1, y, so_long);
     flood_file(area, x, y + 1, so_long);
