@@ -41,3 +41,13 @@ void	safe_mutex(t_mtx *mutex, t_code code)
 	else
 		error_exit("Wrong code for mutex");
 }
+
+void	safe_printf(t_philo *philo, char *s)
+{
+	long	time;
+
+	time = gettime(philo->table);
+	pthread_mutex_lock(&philo->table->write_mutex);
+	printf("%ld %d %s", time, philo->id ,s);
+	pthread_mutex_unlock(&philo->table->write_mutex);
+}

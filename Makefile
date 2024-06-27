@@ -4,7 +4,12 @@ SRC = main.c \
 		utils.c \
 		parsing.c \
 		init_table.c \
-		safe_functions.c
+		safe_functions.c \
+		dinner.c \
+		gettime.c \
+		getters_setters.c \
+		synchro_utils.c \
+		monitor.c
 
 OBJ = $(SRC:.c=.o)
 
