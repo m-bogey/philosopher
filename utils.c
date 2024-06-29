@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:13:06 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 19:43:23 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/06/29 19:51:23 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	clean(t_table *table)
 	t_philo	*philo;
 	int		i;
 
-	pthread_join(table->monitor, NULL);
+	if (table->philo_nbr > 1)
+		pthread_join(table->monitor, NULL);
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
