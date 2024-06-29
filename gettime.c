@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gettime.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbogey <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/29 13:25:07 by mbogey            #+#    #+#             */
+/*   Updated: 2024/06/29 13:25:09 by mbogey           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 long	gettime(t_table *table)
 {
-	struct timeval tv;
-	long	time;
-	long	result;
+	struct timeval	tv;
+	long			time;
+	long			result;
 
 	if (gettimeofday(&tv, NULL))
 	{
@@ -20,10 +32,11 @@ long	gettime(t_table *table)
 
 int	precise_usleep(long usec, t_table *table)
 {
-	struct	timeval start;
-	struct	timeval end;
-	long	elapsed_time = 0;
+	struct timeval	start;
+	struct timeval	end;
+	long			elapsed_time;
 
+	elapsed_time = 0;
 	if (gettimeofday(&start, NULL))
 	{
 		write(2, "fail Gettime\n", 13);
@@ -39,6 +52,8 @@ int	precise_usleep(long usec, t_table *table)
 			write(2, "fail Gettime\n", 13);
 			return (-1);
 		}
-		elapsed_time = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+		elapsed_time = (end.tv_sec - start.tv_sec) * 1000000
+			+ (end.tv_usec - start.tv_usec);
 	}
+	return (0);
 }

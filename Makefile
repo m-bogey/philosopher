@@ -1,5 +1,9 @@
 NAME = philo
+
 CC = cc
+
+CFLAGS = -Wall -Wextra -Werror
+
 SRC = main.c \
 		utils.c \
 		parsing.c \
@@ -19,7 +23,7 @@ all : $(NAME)
 	$(CC) -o $@ -c $<
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) $(CFLAGS) -o $(NAME)
 
 re: fclean all
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_table.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/29 13:22:51 by mbogey            #+#    #+#             */
+/*   Updated: 2024/06/29 14:09:35 by mbogey           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	first_init(int ac, char **av, t_table *table);
@@ -46,6 +58,7 @@ static void	first_init(int ac, char **av, t_table *table)
 	table->threads_running_nbr = 0;
 	table->end_simulation = false;
 	table->all_threads_ready = false;
+	table->can_write = true;
 }
 
 static long	ft_atol(char *str)
@@ -57,7 +70,7 @@ static long	ft_atol(char *str)
 	nb = 0;
 	while (str[i])
 	{
-		nb = (nb * 10) + (str[i] - 48); 
+		nb = (nb * 10) + (str[i] - 48);
 		i++;
 	}
 	return (nb);
@@ -81,6 +94,7 @@ static int	philo_init(t_table *table)
 		assign_forks(philo, table->forks, i);
 		i++;
 	}
+	return (0);
 }
 
 static void	assign_forks(t_philo *philo, t_fork *forks, int i)
@@ -88,7 +102,6 @@ static void	assign_forks(t_philo *philo, t_fork *forks, int i)
 	int	philo_nbr;
 
 	philo_nbr = philo->table->philo_nbr;
-
 	if (philo->id % 2 == 0)
 	{
 		philo->left_fork = &forks[i];

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   synchro_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbogey <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/29 13:15:42 by mbogey            #+#    #+#             */
+/*   Updated: 2024/06/29 13:15:43 by mbogey           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	wait_philos(t_table *table)
@@ -6,7 +18,8 @@ void	wait_philos(t_table *table)
 		;
 }
 
-bool	check_all_philos_run(pthread_mutex_t *mutex, long *threads, long philo_nbr)
+bool	check_all_philos_run(pthread_mutex_t *mutex, long *threads,
+	long philo_nbr)
 {
 	bool	ret;
 
@@ -16,7 +29,7 @@ bool	check_all_philos_run(pthread_mutex_t *mutex, long *threads, long philo_nbr)
 		ret = true;
 	pthread_mutex_unlock(mutex);
 	return (ret);
-}  
+}
 
 void	increase_long(pthread_mutex_t *mutex, long *value)
 {
