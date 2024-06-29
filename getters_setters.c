@@ -1,40 +1,40 @@
 #include "philo.h"
 
-void    set_bool(t_mtx *mutex, bool *dest, bool value)
+void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value)
 {
-    safe_mutex(mutex, LOCK);
-    *dest = value;
-    safe_mutex(mutex, UNLOCK);
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
 }
 
-bool    get_bool(t_mtx *mutex, bool *value)
+bool	get_bool(pthread_mutex_t *mutex, bool *value)
 {
-    bool    ret;
+	bool	ret;
 
-    safe_mutex(mutex, LOCK);
-    ret = *value;
-    safe_mutex(mutex, UNLOCK);
-    return (ret);
+	pthread_mutex_lock(mutex);
+	ret = *value;
+	pthread_mutex_unlock(mutex);
+	return (ret);
 }
 
-bool    get_long(t_mtx *mutex, long *value)
+bool	get_long(pthread_mutex_t *mutex, long *value)
 {
-    long    ret;
+	long	ret;
 
-    safe_mutex(mutex, LOCK);
-    ret = *value;
-    safe_mutex(mutex, UNLOCK);
-    return (ret);
+	pthread_mutex_lock(mutex);
+	ret = *value;
+	pthread_mutex_unlock(mutex);
+	return (ret);
 }
 
-void    set_long(t_mtx *mutex, long *dest, long value)
+void	set_long(pthread_mutex_t *mutex, long *dest, long value)
 {
-    safe_mutex(mutex, LOCK);
-    *dest = value;
-    safe_mutex(mutex, UNLOCK);
+	pthread_mutex_lock(mutex);
+	*dest = value;
+	pthread_mutex_unlock(mutex);
 }
 
 bool    simulation_finished(t_table *table)
 {
-    return (get_bool(&table->table_mutex, &table->end_simulation));
+	return (get_bool(&table->table_mutex, &table->end_simulation));
 }

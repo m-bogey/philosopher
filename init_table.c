@@ -1,48 +1,39 @@
 #include "philo.h"
 
-static long    ft_atol(char *str);
+static void	first_init(int ac, char **av, t_table *table);
+static long	ft_atol(char *str);
+static int	philo_init(t_table *table);
+static void	assign_forks(t_philo *philo, t_fork *forks, int i);
 
-static void	assign_forks(t_philo *philo, t_fork *forks, int i)
-{
-	int	philo_nbr;
-
-	philo_nbr = philo->table->philo_nbr;
-
-
-	philo->left_fork = &forks[(i + 1) % philo_nbr];
-	philo->right_fork = &forks[i];
-	if (philo->id % 2 == 0)
-	{
-		philo->left_fork = &forks[i];
-		philo->right_fork = &forks[(i + 1) % philo_nbr];
-	}
-	//printf("i = %d mod = %d\n", i , (i + 1) % philo_nbr);
-}
-
-static void	philo_init(t_table *table)
-{
-	long	i;
-	t_philo	*philo;
-
-	i = 0;
-	while (i < table->philo_nbr)
-	{
-		philo = table->philos + i;
-		philo->id = i + 1;
-		philo->full = false;
-		philo->meals_counter = 0;
-		philo->table = table;
-		safe_mutex(&philo->philo_mutex, INIT);
-		assign_forks(philo, table->forks, i);
-		i++;
-	}
-}
-
-void	init_table(int ac, char **av, t_table *table)
+int	init_table(int ac, char **av, t_table *table)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
+	first_init(ac, av, table);
+	table->philos = malloc(sizeof(t_philo) * table->philo_nbr);
+	if (table->philos == NULL)
+		return (-1);
+	table->forks = malloc(sizeof(t_fork) * table->philo_nbr);
+	if (table->forks == NULL)
+		return (-1);
+	if (pthread_mutex_init(&table->table_mutex, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&table->printf_mutex, NULL) != 0)
+		return (-1);
+	while (++i < table->philo_nbr)
+	{
+		if (pthread_mutex_init(&table->forks[i].fork, NULL) != 0)
+			return (-1);
+		table->forks[i].is_available = true;
+	}
+	if (philo_init(table) == -1)
+		return (-1);
+	return (0);
+}
+
+static void	first_init(int ac, char **av, t_table *table)
+{
 	table->philo_nbr = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]) * 1000;
 	table->time_to_eat = ft_atol(av[3]) * 1000;
@@ -51,22 +42,10 @@ void	init_table(int ac, char **av, t_table *table)
 		table->nbr_limit_meals = ft_atol(av[5]);
 	else
 		table->nbr_limit_meals = -1;
-	// check si les time to doivent etre superieur a 60000 -> 60ms?
 	table->start_simulation = -1;
 	table->threads_running_nbr = 0;
 	table->end_simulation = false;
 	table->all_threads_ready = false;
-	table->philos = safe_malloc(sizeof(t_philo) * table->philo_nbr);
-	safe_mutex(&table->table_mutex, INIT);
-	safe_mutex(&table->write_mutex, INIT);
-	table->forks = safe_malloc(sizeof(t_fork) * table->philo_nbr);
-	while (i < table->philo_nbr)
-	{
-		safe_mutex(&table->forks[i].fork, INIT);
-		table->forks[i].is_available = true;
-		i++;
-	}
-	philo_init(table);
 }
 
 static long	ft_atol(char *str)
@@ -82,4 +61,42 @@ static long	ft_atol(char *str)
 		i++;
 	}
 	return (nb);
+}
+
+static int	philo_init(t_table *table)
+{
+	long	i;
+	t_philo	*philo;
+
+	i = 0;
+	while (i < table->philo_nbr)
+	{
+		philo = table->philos + i;
+		philo->id = i + 1;
+		philo->full = false;
+		philo->meals_counter = 0;
+		philo->table = table;
+		if (pthread_mutex_init(&philo->philo_mutex, NULL) != 0)
+			return (-1);
+		assign_forks(philo, table->forks, i);
+		i++;
+	}
+}
+
+static void	assign_forks(t_philo *philo, t_fork *forks, int i)
+{
+	int	philo_nbr;
+
+	philo_nbr = philo->table->philo_nbr;
+
+	if (philo->id % 2 == 0)
+	{
+		philo->left_fork = &forks[i];
+		philo->right_fork = &forks[(i + 1) % philo_nbr];
+	}
+	else
+	{
+		philo->left_fork = &forks[(i + 1) % philo_nbr];
+		philo->right_fork = &forks[i];
+	}
 }

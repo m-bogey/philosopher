@@ -1,29 +1,34 @@
 #include "philo.h"
 
-static void	check_int(char *arg);
-static void	ft_isdigit(char *str);
-static void	check_int_max(char	*str);
+static int	check_int(char *arg);
+static int	ft_isdigit(char *str);
+static int	check_int_max(char	*str);
 static int	ft_strcmp_int(char	*str);
 
-void	parsing(int ac, char **av)
+int	parsing(int ac, char **av)
 {
     int	i;
 
 	i = 1;
 	while (i < ac)
 	{
-		check_int(av[i]);
+		if (check_int(av[i]) == -1)
+			return (-1);
 		i++;
 	}
+	return (0);
 }
 
-static void	check_int(char *arg)
+static int	check_int(char *arg)
 {
-	ft_isdigit(arg);
-	check_int_max(arg);
+	if (ft_isdigit(arg) == -1)
+		return (-1);
+	if (check_int_max(arg) == -1)
+		return (-1);
+	return (0);
 }
 
-static void	ft_isdigit(char *str)
+static int	ft_isdigit(char *str)
 {
 	size_t	i;
 
@@ -31,12 +36,16 @@ static void	ft_isdigit(char *str)
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
-			error_exit("arguments is not full digit\n");
+		{
+			write(2, "arguments is not full digit\n", 28);
+			return (-1);
+		}
 		i++;
 	}
+	return (0);
 }
 
-static void	check_int_max(char	*str)
+static int	check_int_max(char	*str)
 {
 	size_t	i;
 
@@ -44,12 +53,19 @@ static void	check_int_max(char	*str)
 	while (str[i])
 		i++;
 	if (i > 10)
-		error_exit("arguments superior to INT MAX");
+	{
+		write(2, "arguments superior to INT MAX\n", 30);
+		return (-1);
+	}
 	if (i == 10)
 	{
 		if (ft_strcmp_int(str) < 0)
-			error_exit("arguments superior to INT MAX");
+		{
+			write(2, "arguments superior to INT MAX\n", 30);
+			return (-1);
+		}
 	}
+	return (0);
 }
 
 static int	ft_strcmp_int(char	*str)

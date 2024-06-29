@@ -9,7 +9,7 @@ SRC = main.c \
 		gettime.c \
 		getters_setters.c \
 		synchro_utils.c \
-		monitor.c
+		check_death.c
 
 OBJ = $(SRC:.c=.o)
 

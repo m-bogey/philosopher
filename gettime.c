@@ -7,7 +7,10 @@ long	gettime(t_table *table)
 	long	result;
 
 	if (gettimeofday(&tv, NULL))
-		error_exit("fail Gettime");
+	{
+		write(2, "fail Gettime\n", 13);
+		return (-1);
+	}
 	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	if (table->start_simulation == -1)
 		return (time);
@@ -15,30 +18,27 @@ long	gettime(t_table *table)
 	return (result);
 }
 
-long	gettime_micro()
-{
-	struct	timeval tv;
-	long	time;
-
-	if (gettimeofday(&tv, NULL))
-		error_exit("fail Gettime");
-	time = tv.tv_sec * 1000000 + tv.tv_usec;
-	return (time);
-}
-
-void	precise_usleep(long usec, t_table *table)
+int	precise_usleep(long usec, t_table *table)
 {
 	struct	timeval start;
 	struct	timeval end;
 	long	elapsed_time = 0;
 
-	gettimeofday(&start, NULL);
+	if (gettimeofday(&start, NULL))
+	{
+		write(2, "fail Gettime\n", 13);
+		return (-1);
+	}
 	while (elapsed_time < usec)
 	{
 		if (simulation_finished(table))
 			break ;
 		usleep(50);
-		gettimeofday(&end, NULL);
+		if (gettimeofday(&end, NULL))
+		{
+			write(2, "fail Gettime\n", 13);
+			return (-1);
+		}
 		elapsed_time = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
 	}
 }
