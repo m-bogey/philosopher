@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:26:45 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 14:55:12 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/06/29 15:20:18 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,20 @@ void	dinner(t_table *table)
 	else
 	{
 		while (++i < table->philo_nbr)
-			pthread_create(&table->philos[i].thread_id, NULL,
-				&routine, &table->philos[i]);
+			if (pthread_create(&table->philos[i].thread_id, NULL,
+					&routine, &table->philos[i]) != 0)
+				return ;
 	}
 	if (table->philo_nbr > 1)
-		pthread_create(&table->monitor, NULL, &check_death_or_full, table);
+		if (pthread_create(&table->monitor, NULL,
+				&check_death_or_full, table) != 0)
+			return ;
 	table->start_simulation = gettime(table);
 	set_bool(&table->table_mutex, &table->all_threads_ready, true);
 	i = -1;
 	while (++i < table->philo_nbr)
-		pthread_join(table->philos[i].thread_id, NULL);
+		if (pthread_join(table->philos[i].thread_id, NULL) != 0)
+			return ;
 }
 
 static void	*if_one_philo(void *arg)

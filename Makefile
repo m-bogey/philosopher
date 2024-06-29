@@ -8,7 +8,7 @@ SRC = main.c \
 		utils.c \
 		parsing.c \
 		init_table.c \
-		safe_functions.c \
+		safe_printf.c \
 		dinner.c \
 		gettime.c \
 		getters_setters.c \
