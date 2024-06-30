@@ -25,7 +25,7 @@ void	dinner(t_table *table)
 	if (table->nbr_limit_meals == 0)
 		return ;
 	else if (table->philo_nbr == 1)
-		pthread_create(&table->philos[0].thread_id, NULL,
+		pthread_create(&table->philos[0].thread_id, NULL, // a proteger
 			&if_one_philo, &table->philos[0]);
 	else
 	{
@@ -87,12 +87,10 @@ static int	think(t_philo *philo)
 
 static int	eat(t_philo *philo)
 {
-	if (pthread_mutex_lock(&philo->left_fork->fork) != 0)
-		return (-1);
+	pthread_mutex_lock(&philo->left_fork->fork);
 	if (safe_printf(philo, " has taken a fork\n") == -1)
 		return (-1);
-	if (pthread_mutex_lock(&philo->right_fork->fork) != 0)
-		return (-1);
+	pthread_mutex_lock(&philo->right_fork->fork);
 	if (safe_printf(philo, " has taken a fork\n") == -1)
 		return (-1);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
@@ -104,10 +102,8 @@ static int	eat(t_philo *philo)
 	if (philo->table->nbr_limit_meals > 0
 		&& philo->meals_counter == philo->table->nbr_limit_meals)
 		set_bool(&philo->philo_mutex, &philo->full, true);
-	if (pthread_mutex_unlock(&philo->left_fork->fork) != 0)
-		return (-1);
-	if (pthread_mutex_unlock(&philo->right_fork->fork) != 0)
-		return (-1);
+	pthread_mutex_unlock(&philo->left_fork->fork);
+	pthread_mutex_unlock(&philo->right_fork->fork);
 	return (0);
 }
 

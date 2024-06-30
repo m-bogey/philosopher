@@ -16,12 +16,10 @@ int	safe_printf(t_philo *philo, char *s)
 {
 	long	time;
 
-	time = gettime(philo->table);
-	if (pthread_mutex_lock(&philo->table->printf_mutex) != 0)
-		return (-1);
+	time = gettime(philo->table); // proteger ? 
+	pthread_mutex_lock(&philo->table->printf_mutex);
 	if (philo->table->can_write == true)
 		printf("%ld %d %s", time, philo->id, s);
-	if (pthread_mutex_unlock(&philo->table->printf_mutex) != 0)
-		return (-1);
+	pthread_mutex_unlock(&philo->table->printf_mutex);
 	return (0);
 }
