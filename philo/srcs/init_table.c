@@ -28,19 +28,21 @@ int	init_table(int ac, char **av, t_table *table)
 		return (-1);
 	table->forks = malloc(sizeof(t_fork) * table->philo_nbr);
 	if (table->forks == NULL)
-		return (-1);
+		return (-2);
 	if (pthread_mutex_init(&table->table_mutex, NULL) != 0)
-		return (-1);
+		return (-3);
 	if (pthread_mutex_init(&table->printf_mutex, NULL) != 0)
-		return (-1);
+		return (-4);
+	if (pthread_mutex_init(&table->stop_printf, NULL) != 0)
+		return (-5);
 	while (++i < table->philo_nbr)
 	{
 		if (pthread_mutex_init(&table->forks[i].fork, NULL) != 0)
-			return (-1);
+			return (-6);
 		table->forks[i].is_available = true;
 	}
 	if (philo_init(table) == -1)
-		return (-1);
+		return (-7);
 	return (0);
 }
 

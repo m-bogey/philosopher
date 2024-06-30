@@ -9,7 +9,7 @@ INCLUDES = includes
 BUILD_DIR = .build
 
 SRC_FILES = main.c \
-		utils.c \
+		clean.c \
 		parsing.c \
 		init_table.c \
 		safe_printf.c \

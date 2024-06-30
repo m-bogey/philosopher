@@ -15,6 +15,7 @@
 int	main(int ac, char **av)
 {
 	t_table	table;
+	int		err;
 
 	if (ac < 5 || ac > 6)
 	{
@@ -23,9 +24,10 @@ int	main(int ac, char **av)
 	}
 	if (parsing(ac, av) == -1)
 		return (0);
-	if (init_table(ac, av, &table) == -1)
+	err = init_table(ac, av, &table);
+	if (err < 0)
 	{
-		clean(&table);
+		clean_init(&table, err);
 		return (-1);
 	}
 	dinner(&table);

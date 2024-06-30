@@ -60,6 +60,7 @@ typedef struct s_table
 	pthread_t		monitor;
 	pthread_mutex_t	table_mutex;
 	pthread_mutex_t	printf_mutex;
+	pthread_mutex_t	stop_printf;
 	t_fork			*forks;
 	t_philo			*philos;
 	bool			can_write;
@@ -86,4 +87,5 @@ void	increase_long(pthread_mutex_t *mutex, long *value);
 
 void	*check_death_or_full(void *data);
 void	clean(t_table *table);
+void	clean_init(t_table *table, int err);
 #endif

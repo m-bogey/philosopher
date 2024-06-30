@@ -32,7 +32,7 @@ void	*check_death_or_full(void *data)
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
 				safe_printf(table->philos, " died\n");
-				set_bool(&table->printf_mutex, &table->can_write, false);
+				set_bool(&table->stop_printf, &table->can_write, false);
 				break ;
 			}
 		}
