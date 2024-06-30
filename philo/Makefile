@@ -2,11 +2,7 @@ NAME = philo
 
 CFLAGS = -Wall -Wextra -Werror -I$(INCLUDES) #-fsanitize=thread
 
-#DFLAGS = -MMD -MP
-
 SRC_DIR = srcs
-
-#FLAG_RL = -L/usr/local/lib -I/usr/local/include
 
 INCLUDES = includes
 
@@ -35,7 +31,7 @@ $(NAME) : $(OBJ)
 	$(CC) -o $(NAME) $(OBJ) 
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
