@@ -46,7 +46,10 @@ static bool	philo_died_or_full(t_philo *philo)
 	long	t_to_die;
 
 	if (get_bool(&philo->philo_mutex, &philo->full))
-		return (false);
+	{
+		set_bool(&philo->table->stop_printf, &philo->table->can_write, false);
+		return (true);
+	}
 	elapsed = gettime(philo->table) - philo->last_meal_time;
 	t_to_die = philo->table->time_to_die / 1000;
 	if (elapsed > t_to_die)

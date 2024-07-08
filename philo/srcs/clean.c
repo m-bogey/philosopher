@@ -17,7 +17,7 @@ void	clean(t_table *table)
 	t_philo	*philo;
 	int		i;
 
-	if (table->philo_nbr > 1 && table->nbr_limit_meals > 0)
+	if (table->philo_nbr > 1 && table->nbr_limit_meals != 0)
 		pthread_join(table->monitor, NULL);
 	i = -1;
 	while (++i < table->philo_nbr)
