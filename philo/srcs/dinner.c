@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:26:45 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 15:20:18 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:05:45 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ static void	*if_one_philo(void *arg);
 static int	think(t_philo *philo);
 static int	eat(t_philo *philo);
 static void	*routine(void *arg);
+
+void	join_philos(t_table *table)
+{
+	int	i;
+
+	i = -1;
+	while (++i < table->philo_nbr)
+		pthread_join(table->philos[i].thread_id, NULL);
+}
 
 void	dinner(t_table *table)
 {
@@ -43,9 +52,7 @@ void	dinner(t_table *table)
 			return ;
 	table->start_simulation = gettime(table);
 	set_bool(&table->table_mutex, &table->all_threads_ready, true);
-	i = -1;
-	while (++i < table->philo_nbr)
-		pthread_join(table->philos[i].thread_id, NULL);
+	join_philos(table);
 }
 
 static void	*if_one_philo(void *arg)

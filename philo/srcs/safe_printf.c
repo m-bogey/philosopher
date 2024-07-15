@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_functions.c                                   :+:      :+:    :+:   */
+/*   safe_printf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:14:11 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 15:00:25 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/15 23:03:59 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	safe_printf(t_philo *philo, char *s)
 {
 	long	time;
 
-	time = gettime(philo->table); // proteger ? 
+	time = gettime(philo->table);
 	pthread_mutex_lock(&philo->table->printf_mutex);
 	if (philo->table->can_write == true)
 		printf("%ld %d %s", time, philo->id, s);

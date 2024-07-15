@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:28:56 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 14:58:49 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:05:01 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*check_death_or_full(void *data)
 	table = (t_table *)data;
 	while (!check_all_philos_run(&table->table_mutex,
 			&table->threads_running_nbr, table->philo_nbr))
-		;
+		usleep(5);
 	while (!simulation_finished(table))
 	{
 		i = -1;
@@ -36,6 +36,7 @@ void	*check_death_or_full(void *data)
 				break ;
 			}
 		}
+		usleep(5);
 	}
 	return (NULL);
 }
