@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:13:06 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/15 23:40:43 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:08:50 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,13 @@ void	clean_init(t_table *table, int err)
 		free(table->forks);
 	if (err <= -2)
 		free(table->philos);
+}
+
+void	join_philos(t_table *table)
+{
+	int	i;
+
+	i = -1;
+	while (++i < table->philo_nbr)
+		pthread_join(table->philos[i].thread_id, NULL);
 }

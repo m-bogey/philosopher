@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:18:41 by mbogey            #+#    #+#             */
-/*   Updated: 2024/06/29 14:05:40 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:09:04 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,5 @@ void	increase_long(pthread_mutex_t *mutex, long *value);
 void	*check_death_or_full(void *data);
 void	clean(t_table *table);
 void	clean_init(t_table *table, int err);
+void	join_philos(t_table *table);
 #endif
