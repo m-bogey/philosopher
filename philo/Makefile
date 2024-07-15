@@ -17,7 +17,8 @@ SRC_FILES = main.c \
 		gettime.c \
 		getters_setters.c \
 		synchro_utils.c \
-		check_death.c
+		check_death.c \
+		if_one_philo.c
 
 SRC = $(addprefix $(SRC_DIR)/, SRC_FILES)
 

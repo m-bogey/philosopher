@@ -6,14 +6,14 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:26:45 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/16 00:08:31 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:43:29 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	*if_one_philo(void *arg);
 static int	think(t_philo *philo);
+static int	todo_eat(t_philo *philo);
 static int	eat(t_philo *philo);
 static void	*routine(void *arg);
 
@@ -46,23 +46,6 @@ void	dinner(t_table *table)
 	join_philos(table);
 }
 
-static void	*if_one_philo(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	wait_philos(philo->table);
-	set_long(&philo->philo_mutex, &philo->last_meal_time,
-		gettime(philo->table));
-	increase_long(&philo->table->table_mutex,
-		&philo->table->threads_running_nbr);
-	if (safe_printf(philo, " has taken a fork\n") == -1)
-		return (NULL);
-	usleep(philo->table->time_to_die);
-	safe_printf(philo->table->philos, " philo died\n");
-	return (NULL);
-}
-
 static int	think(t_philo *philo)
 {
 	long	t_think;
@@ -85,14 +68,8 @@ static int	think(t_philo *philo)
 	return (0);
 }
 
-static int	eat(t_philo *philo)
+static int	todo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->left_fork->fork);
-	if (safe_printf(philo, " has taken a fork\n") == -1)
-		return (-1);
-	pthread_mutex_lock(&philo->right_fork->fork);
-	if (safe_printf(philo, " has taken a fork\n") == -1)
-		return (-1);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
 		gettime(philo->table));
 	philo->meals_counter++;
@@ -102,7 +79,30 @@ static int	eat(t_philo *philo)
 	if (philo->table->nbr_limit_meals > 0
 		&& philo->meals_counter == philo->table->nbr_limit_meals)
 		set_bool(&philo->philo_mutex, &philo->full, true);
-	pthread_mutex_unlock(&philo->right_fork->fork);
+	return (0);
+}
+
+static int	eat(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->left_fork->fork);
+	if (philo->left_fork->is_available == true)
+	{
+		philo->left_fork->is_available = false;
+		if (safe_printf(philo, " has taken a fork\n") == -1)
+			return (-1);
+		pthread_mutex_lock(&philo->right_fork->fork);
+		if (philo->right_fork->is_available == true)
+		{
+			philo->right_fork->is_available = false;
+			if (safe_printf(philo, " has taken a fork\n") == -1)
+				return (-1);
+			if (todo_eat(philo) == -1)
+				return (-1);
+			philo->right_fork->is_available = true;
+		}
+		pthread_mutex_unlock(&philo->right_fork->fork);
+		philo->left_fork->is_available = true;
+	}
 	pthread_mutex_unlock(&philo->left_fork->fork);
 	return (0);
 }
