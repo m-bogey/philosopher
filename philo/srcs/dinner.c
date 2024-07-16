@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:26:45 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/16 00:43:29 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 23:48:39 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ static void	*routine(void *arg)
 	increase_long(&philo->table->table_mutex,
 		&philo->table->threads_running_nbr);
 	if (philo->id % 2 == 0)
+	{
 		think(philo);
+		usleep(philo->table->time_to_eat / 2);
+	}
 	while (!simulation_finished(philo->table))
 	{
 		if (philo->full == true)

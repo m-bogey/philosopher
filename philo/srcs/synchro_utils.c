@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:15:42 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/15 23:53:21 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/16 22:29:43 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	wait_philos(t_table *table)
 {
 	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
-		;
+		usleep(10);
 }
 
 bool	check_all_philos_run(pthread_mutex_t *mutex, long *threads,
