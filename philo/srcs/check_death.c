@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:28:56 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/17 00:31:03 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/17 01:30:44 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	*check_death_or_full(void *data)
 				set_bool(&table->table_mutex, &table->end_simulation, true);
 				safe_printf(table->philos, " died\n");
 				set_bool(&table->printf_mutex, &table->can_write, false);
+				usleep(50);
 				break ;
 			}
 		}

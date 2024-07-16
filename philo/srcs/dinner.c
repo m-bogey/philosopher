@@ -6,7 +6,7 @@
 /*   By: mbogey <mbogey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:26:45 by mbogey            #+#    #+#             */
-/*   Updated: 2024/07/16 23:48:39 by mbogey           ###   ########.fr       */
+/*   Updated: 2024/07/17 01:44:52 by mbogey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	todo_eat(t_philo *philo)
 		return (-1);
 	precise_usleep(philo->table->time_to_eat, philo->table);
 	if (philo->table->nbr_limit_meals > 0
-		&& philo->meals_counter == philo->table->nbr_limit_meals)
+		&& philo->meals_counter == philo->table->nbr_limit_meals + 1)
 		set_bool(&philo->philo_mutex, &philo->full, true);
 	return (0);
 }
